@@ -1,4 +1,4 @@
-stage "cluster" {
+module "cluster" {
   source = "./module"
 
   server_url = var.server_url
