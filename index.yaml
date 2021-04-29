@@ -1,11 +1,51 @@
 id: github.com/cloud-native-toolkit/terraform-ocp-login
-name: ""
+name: ocp-login
+alias: login
 type: terraform
-description: ""
+description: Module to perform a simple cluster login and provide the cluster path
 tags:
-  - tools
-  - devops
+  - openshift
 versions:
+  - platforms:
+      - ocp4
+    dependencies: []
+    variables:
+      - name: server_url
+        scope: global
+        type: string
+        description: The url for the OpenShift api
+        default: ""
+        optional: true
+      - name: user
+        type: string
+        description: Username for login
+        default: ""
+        optional: true
+      - name: password
+        type: string
+        description: Password for login
+        default: ""
+        optional: true
+      - name: token
+        type: string
+        description: Token used for authentication
+        default: ""
+        optional: true
+      - name: skip
+        type: bool
+        description: Flag indicating that the cluster login has already been performed
+        default: false
+        optional: true
+    version: v1.0.0
+    outputs:
+      - name: id
+        description: ID of the cluster.
+      - name: server_url
+        description: The url of the control server.
+      - name: config_file_path
+        description: Path to the config file for the cluster.
+      - name: platform
+        description: Configuration values for the cluster platform
   - platforms:
       - kubernetes
       - ocp3
@@ -27,28 +67,3 @@ versions:
     #          version: ">= 1.6.0"
     variables: []
     version: v0.0.0
-#    - name: cluster_type
-#      moduleRef:
-#        id: cluster
-#        output: type_code
-#    - name: cluster_ingress_hostname
-#      moduleRef:
-#        id: cluster
-#        output: ingress_hostname
-#    - name: cluster_config_file
-#      moduleRef:
-#        id: cluster
-#        output: config_file_path
-#    - name: tls_secret_name
-#      moduleRef:
-#        id: cluster
-#        output: tls_secret_name
-#    - name: releases_namespace
-#      moduleRef:
-#        id: namespace
-#        output: name
-#        discriminator: tools
-#    - name: icon_url
-#      moduleRef:
-#        id: dashboard
-#        output: base_icon_url
