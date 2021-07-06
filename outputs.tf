@@ -11,19 +11,19 @@ output "server_url" {
 }
 
 output "config_file_path" {
-  value       = "${local.cluster_config_dir}/config"
+  value       = local.cluster_config
   description = "Path to the config file for the cluster."
   depends_on  = [null_resource.oc_login]
 }
 
 output "platform" {
   value = {
-    kubeconfig = "${local.cluster_config_dir}/config"
+    kubeconfig = local.cluster_config
     type       = "openshift"
     type_code  = "ocp4"
-    version    = ""
-    ingress    = ""
-    tls_secret = ""
+    version    = var.cluster_version
+    ingress    = var.ingress_subdomain
+    tls_secret = var.tls_secret_name
   }
   description = "Configuration values for the cluster platform"
   depends_on  = [null_resource.oc_login]
