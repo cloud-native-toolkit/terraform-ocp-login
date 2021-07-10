@@ -29,6 +29,6 @@ resource "null_resource" "oc_login" {
   }
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/oc-login.sh \"${var.server_url}\" \"${var.user}\" \"${var.password}\" \"${var.token}\""
+    command = "${path.module}/scripts/oc-login.sh \"${var.server_url}\" \"${var.login_user}\" \"${var.login_password}\" \"${var.login_token}\""
   }
 }
