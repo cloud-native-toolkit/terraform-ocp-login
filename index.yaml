@@ -16,6 +16,61 @@ versions:
         description: The url for the OpenShift api
         default: ""
         optional: true
+      - name: login_user
+        type: string
+        description: Username for login
+        default: ""
+        optional: true
+      - name: login_password
+        type: string
+        description: Password for login
+        default: ""
+        optional: true
+      - name: login_token
+        type: string
+        description: Token used for authentication
+        default: ""
+        optional: true
+      - name: skip
+        type: bool
+        description: Flag indicating that the cluster login has already been performed
+        default: false
+        optional: true
+      - name: cluster_version
+        type: string
+        description: The version of the cluster (passed through to the output)
+        default: ""
+        optional: true
+      - name: ingress_subdomain
+        type: string
+        description: The ingress subdomain of the cluster (passed through to the output)
+        default: ""
+        optional: true
+      - name: tls_secret_name
+        type: string
+        description: The name of the secret containing the tls certificates for the ingress subdomain (passed through to the output)
+        default: ""
+        optional: true
+    version: v1.1.0
+    outputs:
+      - name: id
+        description: ID of the cluster.
+      - name: server_url
+        description: The url of the control server.
+      - name: config_file_path
+        description: Path to the config file for the cluster.
+      - name: platform
+        description: Configuration values for the cluster platform
+  - platforms:
+      - ocp4
+    dependencies: []
+    variables:
+      - name: server_url
+        scope: global
+        type: string
+        description: The url for the OpenShift api
+        default: ""
+        optional: true
       - name: user
         type: string
         description: Username for login
