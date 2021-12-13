@@ -1,5 +1,5 @@
 name: ocp-login
-alias: login
+alias: cluster
 type: terraform
 description: Module to perform a simple cluster login and provide the cluster path
 tags:

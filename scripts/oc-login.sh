@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
 SERVER="$1"
-USERNAME="$2"
-PASSWORD="$3"
-TOKEN="$4"
 
 if [[ -z "${USERNAME}" ]] && [[ -z "${PASSWORD}" ]] && [[ -z "${TOKEN}" ]]; then
   echo "The username and password or the token must be provided to log into ocp"
@@ -16,4 +13,5 @@ else
   AUTH="--username=${USERNAME} --password=${PASSWORD}"
 fi
 
+echo "Logging in to OCP cluster: ${SERVER}"
 oc login --insecure-skip-tls-verify=true ${AUTH} --server="${SERVER}" > /dev/null

@@ -1,14 +1,3 @@
-provider "helm" {
-  version = ">= 1.1.1"
-
-  kubernetes {
-    config_path = local.cluster_config
-  }
-}
-
-provider "null" {
-}
-
 locals {
   cluster_config_dir    = pathexpand("~/.kube")
   cluster_config        = "${local.cluster_config_dir}/config"
@@ -29,6 +18,12 @@ resource "null_resource" "oc_login" {
   }
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/oc-login.sh \"${var.server_url}\" \"${var.login_user}\" \"${var.login_password}\" \"${var.login_token}\""
+    command = "${path.module}/scripts/oc-login.sh '${var.server_url}'"
+
+    environment = {
+      USERNAME = var.login_user
+      PASSWORD = var.login_password
+      TOKEN = var.login_token
+    }
   }
 }

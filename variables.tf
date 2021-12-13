@@ -14,12 +14,14 @@ variable "login_password" {
   type        = string
   description = "Password for login"
   default     = ""
+  sensitive   = true
 }
 
 variable "login_token" {
   type        = string
   description = "Token used for authentication"
   default     = ""
+  sensitive   = true
 }
 
 variable "skip" {
