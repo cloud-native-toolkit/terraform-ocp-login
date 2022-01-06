@@ -1,7 +1,6 @@
 variable "server_url" {
   type        = string
   description = "The url for the OpenShift api"
-  default     = ""
 }
 
 variable "login_user" {
@@ -20,7 +19,6 @@ variable "login_password" {
 variable "login_token" {
   type        = string
   description = "Token used for authentication"
-  default     = ""
   sensitive   = true
 }
 
