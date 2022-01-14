@@ -1,6 +1,8 @@
 name: ocp-login
 alias: cluster
 type: terraform
+interfaces:
+  - github.com/cloud-native-toolkit/automation-modules#cluster
 description: Module to perform a simple cluster login and provide the cluster path
 tags:
     - openshift
