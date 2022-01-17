@@ -1,11 +1,60 @@
 id: github.com/cloud-native-toolkit/terraform-ocp-login
 name: ocp-login
 alias: cluster
+interfaces:
+  - github.com/cloud-native-toolkit/automation-modules#cluster
 type: terraform
 description: Module to perform a simple cluster login and provide the cluster path
 tags:
   - openshift
 versions:
+  - platforms:
+      - ocp4
+    dependencies: []
+    variables:
+      - name: server_url
+        scope: global
+        type: string
+        description: The url for the OpenShift api
+      - name: login_user
+        type: string
+        description: Username for login
+        default: ""
+      - name: login_password
+        type: string
+        description: Password for login
+        sensitive: true
+        default: ""
+      - name: login_token
+        type: string
+        description: Token used for authentication
+        sensitive: true
+      - name: skip
+        type: bool
+        description: Flag indicating that the cluster login has already been performed
+        default: false
+      - name: cluster_version
+        type: string
+        description: The version of the cluster (passed through to the output)
+        default: ""
+      - name: ingress_subdomain
+        type: string
+        description: The ingress subdomain of the cluster (passed through to the output)
+        default: ""
+      - name: tls_secret_name
+        type: string
+        description: The name of the secret containing the tls certificates for the ingress subdomain (passed through to the output)
+        default: ""
+    version: v1.2.2
+    outputs:
+      - name: id
+        description: ID of the cluster.
+      - name: server_url
+        description: The url of the control server.
+      - name: config_file_path
+        description: Path to the config file for the cluster.
+      - name: platform
+        description: Configuration values for the cluster platform
   - platforms:
       - ocp4
     dependencies: []
