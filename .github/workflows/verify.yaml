@@ -58,10 +58,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: cloud-native-toolkit/action-module-metadata-create@main
+      - uses: cloud-native-toolkit/action-module-metadata-create@v1
         with:
-          tagName: v4.0.0
-          distDir: ./output
           strict: true
           validate: true
 

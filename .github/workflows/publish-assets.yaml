@@ -20,7 +20,7 @@ jobs:
           ref: ${{ github.event.release.tag_name }}
 
       - name: Build catalog
-        uses: cloud-native-toolkit/action-module-metadata-create@main
+        uses: cloud-native-toolkit/action-module-metadata-create@v1
         with:
           tagName: ${{ github.event.release.tag_name }}
           distDir: ${{ env.DIST_DIR }}
