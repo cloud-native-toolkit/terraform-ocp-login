@@ -29,14 +29,14 @@ output "server_url" {
 }
 
 output "config_file_path" {
-  value       = local.cluster_config
+  value       = !var.skip ? data.external.oc_login[0].result.kube_config : ""
   description = "Path to the config file for the cluster."
   depends_on  = [data.external.oc_login]
 }
 
 output "platform" {
   value = {
-    kubeconfig = local.cluster_config
+    kubeconfig = !var.skip ? data.external.oc_login[0].result.kube_config : ""
     type       = "openshift"
     type_code  = "ocp4"
     version    = var.cluster_version
