@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
-KUBECONFIG=~/.kube/config
+export KUBECONFIG=$(cat .kubeconfig)
+
+echo "Kube config: ${KUBECONFIG}"
 
 oc api-resources -o name
