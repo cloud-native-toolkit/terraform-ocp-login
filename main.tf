@@ -14,7 +14,7 @@ data external oc_login {
     username = var.login_user
     password = var.login_password
     token = var.login_token
-    kube_config = local.cluster_config_dir
+    kube_config = local.cluster_config
     tmp_dir = local.tmp_dir
   }
 }
