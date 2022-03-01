@@ -30,7 +30,7 @@ else
 fi
 
 if oc login --insecure-skip-tls-verify=true ${AUTH} --server="${SERVER}" 1> /dev/null 2> "${TMP_DIR}/error.log"; then
-  echo "{\"status\": \"success\", \"message\": \"success\" \"kube_config\": \"${KUBE_CONFIG}\"}"
+  echo "{\"status\": \"success\", \"message\": \"success\", \"kube_config\": \"${KUBE_CONFIG}\"}"
   exit 0
 else
   echo "{\"status\": \"error\", \"message\": \"$(cat ${TMP_DIR}/error.log)\"}"
