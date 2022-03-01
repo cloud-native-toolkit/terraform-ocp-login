@@ -13,7 +13,7 @@ output "name" {
 output "region" {
   value       = ""
   description = "Region of the cluster"
-  depends_on  = [null_resource.oc_login]
+  depends_on  = [data.external.oc_login]
 }
 
 output "resource_group_name" {
