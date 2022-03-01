@@ -1,29 +1,20 @@
 locals {
   cluster_config_dir    = pathexpand("~/.kube")
   cluster_config        = "${local.cluster_config_dir}/config"
-  tmp_dir               = "${path.cwd}/.tmp"
+  tmp_dir               = "${path.cwd}/.tmp/cluster"
 }
 
-resource "null_resource" "create_dirs" {
-  provisioner "local-exec" {
-    command = "mkdir -p ${local.tmp_dir}"
-  }
-}
-
-resource "null_resource" "oc_login" {
+data external oc_login {
   count = var.skip ? 0 : 1
 
-  triggers = {
-    always_run = timestamp()
-  }
+  program = ["bash", "${path.module}/scripts/oc-login.sh"]
 
-  provisioner "local-exec" {
-    command = "${path.module}/scripts/oc-login.sh '${var.server_url}'"
-
-    environment = {
-      USERNAME = var.login_user
-      PASSWORD = var.login_password
-      TOKEN = var.login_token
-    }
+  query = {
+    serverUrl = var.server_url
+    username = var.login_user
+    password = var.login_password
+    token = var.login_token
+    kube_config = local.cluster_config_dir
+    tmp_dir = local.tmp_dir
   }
 }
