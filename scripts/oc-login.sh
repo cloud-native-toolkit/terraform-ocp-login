@@ -30,9 +30,10 @@ else
   AUTH="--username=${USERNAME} --password=${PASSWORD}"
 fi
 
-if ${BIN_DIR}/oc login --insecure-skip-tls-verify=true ${AUTH} --server="${SERVER}" 1> /dev/null; then
+if ${BIN_DIR}/oc login --insecure-skip-tls-verify=true ${AUTH} --server="${SERVER}" 1> /dev/null 2> /dev/null; then
   echo "{\"status\": \"success\", \"message\": \"success\", \"kube_config\": \"${KUBE_CONFIG}\"}"
   exit 0
 else
+  echo "Error logging into OpenShift server '${SERVER}' as user '${USERNAME}" >&2
   exit 1
 fi
