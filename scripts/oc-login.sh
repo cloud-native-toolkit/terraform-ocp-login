@@ -2,6 +2,7 @@
 
 INPUT=$(tee)
 
+BIN_DIR=$(echo "${INPUT}" | grep "bin_dir" | sed -E 's/.*"bin_dir": ?"([^"]*)".*/\1/g')
 SERVER=$(echo "${INPUT}" | grep "serverUrl" | sed -E 's/.*"serverUrl": ?"([^"]*)".*/\1/g')
 USERNAME=$(echo "${INPUT}" | grep "username" | sed -E 's/.*"username": ?"([^"]*)".*/\1/g')
 PASSWORD=$(echo "${INPUT}" | grep "password" | sed -E 's/.*"password": ?"([^"]*)".*/\1/g')
@@ -19,7 +20,7 @@ if [[ -z "${KUBE_CONFIG}" ]]; then
 fi
 
 if [[ -z "${USERNAME}" ]] && [[ -z "${PASSWORD}" ]] && [[ -z "${TOKEN}" ]]; then
-  echo '{"message": "The username and password or the token must be provided to log into ocp"}'
+  echo '{"message": "The username and password or the token must be provided to log into ocp"}' >&2
   exit 1
 fi
 
@@ -29,10 +30,9 @@ else
   AUTH="--username=${USERNAME} --password=${PASSWORD}"
 fi
 
-if oc login --insecure-skip-tls-verify=true ${AUTH} --server="${SERVER}" 1> /dev/null 2> "${TMP_DIR}/error.log"; then
+if ${BIN_DIR}/oc login --insecure-skip-tls-verify=true ${AUTH} --server="${SERVER}" 1> /dev/null; then
   echo "{\"status\": \"success\", \"message\": \"success\", \"kube_config\": \"${KUBE_CONFIG}\"}"
   exit 0
 else
-  echo "{\"status\": \"error\", \"message\": \"$(cat ${TMP_DIR}/error.log)\"}"
   exit 1
 fi
