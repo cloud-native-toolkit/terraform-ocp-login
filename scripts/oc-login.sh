@@ -30,6 +30,11 @@ else
   AUTH="--username=${USERNAME} --password=${PASSWORD}"
 fi
 
+KUBE_DIR=$(dirname "${KUBE_CONFIG}")
+mkdir -p "${KUBE_DIR}"
+
+export KUBECONFIG="${KUBE_CONFIG}"
+
 if ${BIN_DIR}/oc login --insecure-skip-tls-verify=true ${AUTH} --server="${SERVER}" 1> /dev/null 2> /dev/null; then
   echo "{\"status\": \"success\", \"message\": \"success\", \"kube_config\": \"${KUBE_CONFIG}\"}"
   exit 0
