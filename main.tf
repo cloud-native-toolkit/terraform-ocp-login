@@ -1,5 +1,5 @@
 locals {
-  cluster_config_dir    = pathexpand("~/.kube")
+  cluster_config_dir    = "${path.cwd}/.tmp/.kube"
   cluster_config        = "${local.cluster_config_dir}/config"
   tmp_dir               = "${path.cwd}/.tmp/cluster"
 }
