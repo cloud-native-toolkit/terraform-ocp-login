@@ -6,7 +6,7 @@ locals {
 
 module setup_clis {
   source = "cloud-native-toolkit/clis/util"
-  version = "1.9.3"
+  version = "1.9.5"
 
   clis = ["oc"]
 }
