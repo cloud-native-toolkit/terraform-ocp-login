@@ -10,6 +10,8 @@ TOKEN=$(echo "${INPUT}" | grep "token" | sed -E 's/.*"token": ?"([^"]*)".*/\1/g'
 KUBE_CONFIG=$(echo "${INPUT}" | grep "kube_config" | sed -E 's/.*"kube_config": ?"([^"]*)".*/\1/g')
 TMP_DIR=$(echo "${INPUT}" | grep "tmp_dir" | sed -E 's/.*"tmp_dir": ?"([^"]*)".*/\1/g')
 
+export PATH="${BIN_DIR}:${PATH}"
+
 if [[ -z "${TMP_DIR}" ]]; then
   TMP_DIR="${PWD}/.tmp/cluster"
 fi
@@ -35,10 +37,9 @@ mkdir -p "${KUBE_DIR}"
 
 export KUBECONFIG="${KUBE_CONFIG}"
 
-if ${BIN_DIR}/oc login --insecure-skip-tls-verify=true ${AUTH} --server="${SERVER}" 1> /dev/null 2> /dev/null; then
+if ! oc login --insecure-skip-tls-verify=true ${AUTH} --server="${SERVER}" 1> /dev/null; then
+  exit 1
+else
   echo "{\"status\": \"success\", \"message\": \"success\", \"kube_config\": \"${KUBE_CONFIG}\"}"
   exit 0
-else
-  echo "Error logging into OpenShift server '${SERVER}' as user '${USERNAME}'" >&2
-  exit 1
 fi
