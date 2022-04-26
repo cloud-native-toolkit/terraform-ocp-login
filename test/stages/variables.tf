@@ -1,10 +1,26 @@
 
-variable "ibmcloud_api_key" {
+variable "cluster_password" {
   type        = string
   description = "The api key for IBM Cloud access"
+  default = ""
+}
+
+variable "cluster_token" {
+  type        = string
+  description = "The api key for IBM Cloud access"
+  default = ""
 }
 
 variable "server_url" {
   type        = string
   description = "The url of the server."
+}
+
+variable "ingress_subdomain" {
+  type = string
+}
+
+variable "cluster_username" {
+  type = string
+  default = "apikey"
 }

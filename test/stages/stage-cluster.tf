@@ -2,9 +2,10 @@ module "cluster" {
   source = "./module"
 
   server_url = var.server_url
-  login_user = "apikey"
-  login_password = var.ibmcloud_api_key
-  login_token = ""
+  login_user = var.cluster_username
+  login_password = var.cluster_password
+  login_token = var.cluster_token
+  ingress_subdomain = var.ingress_subdomain
 }
 
 resource null_resource cluster_config {
