@@ -63,10 +63,9 @@ if [[ -z "${CLUSTER_ID}" ]]; then
 fi
 
 export KUBECONFIG
-if ! ibmcloud oc cluster config -c "${CLUSTER_ID}" 1> /dev/null 2> /dev/null; then
+if ! ibmcloud oc cluster config -c "${CLUSTER_ID}" --admin 1> /dev/null 2> /dev/null; then
   echo "Cluster id: ${CLUSTER_ID}" >&2
-  ibmcloud ks cluster ls --output json >&2
-  ibmcloud oc cluster config -c "${CLUSTER_ID}" >&2
+  ibmcloud oc cluster config -c "${CLUSTER_ID}" --admin >&2
   ibmcloud --version >&2
   echo "{\"token\": \"${TOKEN}\", \"username\": \"${USERNAME}\", \"password\": \"${PASSWORD}\", \"serverUrl\": \"${SERVER}\", \"skip\": \"${SKIP}\", \"kube_config\": \"${KUBECONFIG}\"}"
   exit 1
