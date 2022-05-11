@@ -18,6 +18,7 @@ variable "server_url" {
 
 variable "ingress_subdomain" {
   type = string
+  default = ""
 }
 
 variable "cluster_username" {
