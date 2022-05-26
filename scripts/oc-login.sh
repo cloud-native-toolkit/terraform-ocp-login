@@ -60,7 +60,7 @@ if [[ -n "${TOKEN}" ]]; then
     oc version >&2
     exit 1
   else
-    echo "{\"status\": \"success\", \"message\": \"success\", \"kube_config\": \"${KUBE_CONFIG}\"}"
+    echo "{\"status\": \"success\", \"message\": \"success\", \"kube_config\": \"${KUBE_CONFIG}\", \"serverUrl\":\"${SERVER}\"}"
     exit 0
   fi
 else
@@ -70,7 +70,7 @@ else
     oc login --kubeconfig="${KUBE_CONFIG}" --insecure-skip-tls-verify=true --username="${USERNAME}" --password="${PASSWORD}" "${SERVER}" --loglevel=10 >&2
     exit 1
   else
-    echo "{\"status\": \"success\", \"message\": \"success\", \"kube_config\": \"${KUBE_CONFIG}\"}"
+    echo "{\"status\": \"success\", \"message\": \"success\", \"kube_config\": \"${KUBE_CONFIG}\", \"serverUrl\":\"${SERVER}\"}"
     exit 0
   fi
 fi
