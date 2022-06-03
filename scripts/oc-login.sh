@@ -29,6 +29,7 @@ PASSWORD=$(echo "${INPUT}" | jq -r '.password')
 TOKEN=$(echo "${INPUT}" | jq -r '.token')
 KUBE_CONFIG=$(echo "${INPUT}" | jq -r '.kube_config')
 TMP_DIR=$(echo "${INPUT}" | jq -r '.tmp_dir')
+CA_CERT=$(echo "${INPUT}" | jq -r '.ca_cert')
 
 if [[ "${SKIP}" == "true" ]]; then
   echo "{\"token\": \"${TOKEN}\", \"username\": \"${USERNAME}\", \"password\": \"${PASSWORD}\", \"serverUrl\": \"${SERVER}\", \"skip\": \"${SKIP}\", \"kube_config\": \"${KUBE_CONFIG}\"}"
@@ -53,9 +54,15 @@ KUBE_DIR=$(dirname "${KUBE_CONFIG}")
 mkdir -p "${KUBE_DIR}"
 touch "${KUBE_CONFIG}"
 
+CERTIFICATE=""
+if [[ -n "${CA_CERT}" ]]; then
+  echo "${CA_CERT}" > "${TMP_DIR}/ca.crt"
+  CERTIFICATE="--certificate-authority=${TMP_DIR}/ca.crt"
+fi
+
 if [[ -n "${TOKEN}" ]]; then
   AUTH_TYPE="token"
-  if ! oc login --kubeconfig="${KUBE_CONFIG}" --server="${SERVER}" --insecure-skip-tls-verify=true --token="${TOKEN}" 1> /dev/null; then
+  if ! oc login --kubeconfig="${KUBE_CONFIG}" --server="${SERVER}" --insecure-skip-tls-verify=true --token="${TOKEN}" ${CERTIFICATE} 1> /dev/null; then
     echo "Error logging in to ${SERVER} with kubeconfig=${KUBE_CONFIG} and auth=${AUTH_TYPE}" >&2
     oc version >&2
     exit 1
@@ -65,9 +72,9 @@ if [[ -n "${TOKEN}" ]]; then
   fi
 else
   AUTH_TYPE="username(${USERNAME})"
-  if ! oc login --kubeconfig="${KUBE_CONFIG}" --insecure-skip-tls-verify=true --username="${USERNAME}" --password="${PASSWORD}" "${SERVER}" 1> /dev/null; then
+  if ! oc login --kubeconfig="${KUBE_CONFIG}" --insecure-skip-tls-verify=true --username="${USERNAME}" --password="${PASSWORD}" ${CERTIFICATE} "${SERVER}" 1> /dev/null; then
     echo "Error logging in to ${SERVER} with kubeconfig=${KUBE_CONFIG} and auth=${AUTH_TYPE}" >&2
-    oc login --kubeconfig="${KUBE_CONFIG}" --insecure-skip-tls-verify=true --username="${USERNAME}" --password="${PASSWORD}" "${SERVER}" --loglevel=10 >&2
+    oc login --kubeconfig="${KUBE_CONFIG}" --insecure-skip-tls-verify=true --username="${USERNAME}" --password="${PASSWORD}" ${CERTIFICATE} "${SERVER}" --loglevel=10 >&2
     exit 1
   else
     echo "{\"status\": \"success\", \"message\": \"success\", \"kube_config\": \"${KUBE_CONFIG}\", \"serverUrl\":\"${SERVER}\"}"

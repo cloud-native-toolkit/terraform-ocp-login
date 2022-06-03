@@ -45,3 +45,15 @@ variable "tls_secret_name" {
   description = "The name of the secret containing the tls certificates for the ingress subdomain (passed through to the output)"
   default     = ""
 }
+
+variable "ca_cert" {
+  type        = string
+  description = "The ca certificate contents"
+  default     = ""
+}
+
+variable "ca_cert_file" {
+  type        = string
+  description = "The path to the file that contains the ca certificate"
+  default     = ""
+}

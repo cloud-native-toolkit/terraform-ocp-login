@@ -3,6 +3,7 @@ locals {
   cluster_config        = "${local.cluster_config_dir}/config"
   tmp_dir               = "${path.cwd}/.tmp/cluster"
   default_cluster_config = pathexpand("~/.kube/config")
+  ca_cert               = var.ca_cert_file != null && var.ca_cert_file != "" ? file(var.ca_cert_file) : var.ca_cert
 }
 
 module setup_clis {
@@ -39,5 +40,6 @@ data external oc_login {
     token = data.external.ibmcloud_login.result.token
     kube_config = data.external.ibmcloud_login.result.kube_config
     tmp_dir = local.tmp_dir
+    ca_cert = local.ca_cert
   }
 }
