@@ -25,3 +25,8 @@ variable "cluster_username" {
   type = string
   default = "apikey"
 }
+
+variable "cluster_ca_cert" {
+  type = string
+  default = ""
+}

@@ -48,7 +48,7 @@ variable "tls_secret_name" {
 
 variable "ca_cert" {
   type        = string
-  description = "The ca certificate contents"
+  description = "The base64 encoded ca certificate"
   default     = ""
 }
 

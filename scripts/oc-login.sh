@@ -29,7 +29,7 @@ PASSWORD=$(echo "${INPUT}" | jq -r '.password')
 TOKEN=$(echo "${INPUT}" | jq -r '.token')
 KUBE_CONFIG=$(echo "${INPUT}" | jq -r '.kube_config')
 TMP_DIR=$(echo "${INPUT}" | jq -r '.tmp_dir')
-CA_CERT=$(echo "${INPUT}" | jq -r '.ca_cert')
+CA_CERT=$(echo "${INPUT}" | jq -r '.ca_cert | @base64d')
 
 if [[ "${SKIP}" == "true" ]]; then
   echo "{\"token\": \"${TOKEN}\", \"username\": \"${USERNAME}\", \"password\": \"${PASSWORD}\", \"serverUrl\": \"${SERVER}\", \"skip\": \"${SKIP}\", \"kube_config\": \"${KUBE_CONFIG}\"}"
@@ -55,9 +55,11 @@ mkdir -p "${KUBE_DIR}"
 touch "${KUBE_CONFIG}"
 
 CERTIFICATE=""
+CERT_FILE=""
 if [[ -n "${CA_CERT}" ]]; then
-  echo "${CA_CERT}" > "${TMP_DIR}/ca.crt"
-  CERTIFICATE="--certificate-authority=${TMP_DIR}/ca.crt"
+  CERT_FILE="${TMP_DIR}/ca.crt"
+  echo "${CA_CERT}" > "${CERT_FILE}"
+  CERTIFICATE="--certificate-authority=${CERT_FILE}"
 fi
 
 if [[ -n "${TOKEN}" ]]; then
@@ -73,7 +75,8 @@ if [[ -n "${TOKEN}" ]]; then
 else
   AUTH_TYPE="username(${USERNAME})"
   if ! oc login --kubeconfig="${KUBE_CONFIG}" --insecure-skip-tls-verify=true --username="${USERNAME}" --password="${PASSWORD}" ${CERTIFICATE} "${SERVER}" 1> /dev/null; then
-    echo "Error logging in to ${SERVER} with kubeconfig=${KUBE_CONFIG} and auth=${AUTH_TYPE}" >&2
+    echo "Error logging in to ${SERVER} with kubeconfig=${KUBE_CONFIG}, auth=${AUTH_TYPE}, and cert_file=${CERT_FILE}" >&2
+    cat "${CERT_FILE}" | wc -c | xargs -I{} echo "cert size: {}" >&2
     oc login --kubeconfig="${KUBE_CONFIG}" --insecure-skip-tls-verify=true --username="${USERNAME}" --password="${PASSWORD}" ${CERTIFICATE} "${SERVER}" --loglevel=10 >&2
     exit 1
   else

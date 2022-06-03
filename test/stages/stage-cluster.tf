@@ -6,6 +6,7 @@ module "cluster" {
   login_password = var.cluster_password
   login_token = var.cluster_token
   ingress_subdomain = var.ingress_subdomain
+  ca_cert = var.cluster_ca_cert
 }
 
 resource null_resource cluster_config {
