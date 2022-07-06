@@ -36,9 +36,9 @@ output "platform" {
     kubeconfig = data.external.oc_login.result.kube_config
     type       = "openshift"
     type_code  = "ocp4"
-    version    = var.cluster_version
-    ingress    = var.ingress_subdomain
-    tls_secret = var.tls_secret_name
+    version    = data.external.cluster_info.result.cluster_version
+    ingress    = data.external.cluster_info.result.ingress_subdomain
+    tls_secret = data.external.cluster_info.result.tls_secret
   }
   description = "Configuration values for the cluster platform"
   depends_on  = [data.external.oc_login]

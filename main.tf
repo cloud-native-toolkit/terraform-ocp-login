@@ -43,3 +43,15 @@ data external oc_login {
     ca_cert = local.ca_cert
   }
 }
+
+data external cluster_info {
+  depends_on = [data.external.oc_login]
+
+  program = ["bash", "${path.module}/scripts/get-cluster-info.sh"]
+
+  query = {
+    bin_dir = module.setup_clis.bin_dir
+    kube_config = data.external.oc_login.result.kube_config
+    default_ingress = var.ingress_subdomain
+  }
+}

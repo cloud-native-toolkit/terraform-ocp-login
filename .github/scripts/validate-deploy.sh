@@ -18,3 +18,5 @@ if [[ $(kubectl api-resources -o name | wc -l) -eq 0 ]]; then
   echo "Unable to retrieve api resources using kubectl cli" >&2
   exit 1
 fi
+
+cat .outputs

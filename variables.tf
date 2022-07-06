@@ -30,19 +30,19 @@ variable "skip" {
 
 variable "cluster_version" {
   type        = string
-  description = "The version of the cluster (passed through to the output)"
+  description = "[Deprecated] The version of the cluster (passed through to the output)"
   default     = ""
 }
 
 variable "ingress_subdomain" {
   type        = string
-  description = "The ingress subdomain of the cluster (passed through to the output)"
+  description = "[Deprecated] The ingress subdomain of the cluster (passed through to the output)"
   default     = ""
 }
 
 variable "tls_secret_name" {
   type        = string
-  description = "The name of the secret containing the tls certificates for the ingress subdomain (passed through to the output)"
+  description = "[Deprecated] The name of the secret containing the tls certificates for the ingress subdomain (passed through to the output)"
   default     = ""
 }
 
