@@ -26,6 +26,23 @@ output "server_url" {
   description = "The url of the control server."
 }
 
+output "username" {
+  value       = data.external.oc_login.result.username
+  description = "The username of the control server."
+}
+
+output "password" {
+  value       = data.external.oc_login.result.password
+  description = "The password of the control server."
+  sensitive = true
+}
+
+output "token" {
+  value       = data.external.oc_login.result.token
+  description = "The token of the control server."
+  sensitive = true
+}
+
 output "config_file_path" {
   value       = data.external.oc_login.result.kube_config
   description = "Path to the config file for the cluster."
