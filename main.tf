@@ -8,7 +8,7 @@ locals {
 
 module setup_clis {
   source = "cloud-native-toolkit/clis/util"
-  version = "1.14.1"
+  version = "1.16.4"
 
   clis = ["jq", "oc", "ibmcloud-ks"]
 }
