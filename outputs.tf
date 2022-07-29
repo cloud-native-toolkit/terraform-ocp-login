@@ -60,3 +60,9 @@ output "platform" {
   description = "Configuration values for the cluster platform"
   depends_on  = [data.external.oc_login]
 }
+
+output "ca_cert" {
+  value       = local.ca_cert != "" ? base64decode(local.ca_cert) : ""
+  description = "CA certificate for cluster endpoints"
+  depends_on = [data.external.oc_login]
+}
