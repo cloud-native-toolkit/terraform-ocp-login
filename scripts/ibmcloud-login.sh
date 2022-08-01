@@ -40,7 +40,7 @@ if [[ -z "${TMP_DIR}" ]]; then
 fi
 mkdir -p "${TMP_DIR}"
 
-REGION=$(echo "${SERVER}" | sed -E "s~https://[^.]+[.]([^.]+)[.].*~\1~g")
+REGION=$(echo "${SERVER}" | sed -E "s~https://[^.]+.(private[.])?([^.]+)[.].*~\2~g")
 
 ibmcloud login -r "${REGION}" --apikey "${PASSWORD}" 1> /dev/null || exit 1
 ibmcloud ks cluster ls | grep -v "Name" | grep -vE "^OK" | sed -E "s/^([^ ]+).*/\1/g" | while read cluster_name; do
