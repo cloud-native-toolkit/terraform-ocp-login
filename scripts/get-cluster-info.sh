@@ -25,6 +25,19 @@ fi
 export KUBECONFIG=$(echo "${INPUT}" | jq -r '.kube_config')
 DEFAULT_INGRESS=$(echo "${INPUT}" | jq -r '.default_ingress // empty')
 
+OCP_ID=$(oc get clusterversion -o json | jq -r '.items[].spec.clusterID')
+
+NODE_NAME=$(oc get nodes -o json | jq -r '.items[] | .metadata.name' | head -1)
+NODE_INFO=$(oc get nodes "${NODE_NAME}" -o json)
+
+IBM_REGION=$(echo "${NODE_INFO}" | jq -r '.metadata.labels["ibm-cloud.kubernetes.io/region"] // empty')
+if [[ -n "${IBM_REGION}" ]]; then
+  PROVIDER_ID=$(echo "${NODE_INFO}" | jq -r '.spec.providerID')
+
+  CLUSTER_ID=$(echo "${PROVIDER_ID}" | sed -E 's~ibm://[^/]+/[^/]*/[^/]*/([^/]+)/.*~\1~g')
+else
+  CLUSTER_ID="${OCP_ID}"
+fi
 
 INGRESS=$(oc get ingresses.config/cluster -o json | jq -r --arg DEFAULT "${DEFAULT_INGRESS}" '.spec.domain // $DEFAULT')
 VERSION=$(oc version -o json | jq -r '.openshiftVersion // empty')
@@ -34,4 +47,6 @@ jq -n \
   --arg INGRESS "${INGRESS}" \
   --arg VERSION "${VERSION}" \
   --arg TLS_SECRET "${TLS_SECRET}" \
-  '{"ingress_subdomain": $INGRESS, "cluster_version": $VERSION, "tls_secret": $TLS_SECRET}'
+  --arg CLUSTER_ID "${CLUSTER_ID}" \
+  --arg OCP_ID "${OCP_ID}" \
+  '{"ingress_subdomain": $INGRESS, "cluster_version": $VERSION, "tls_secret": $TLS_SECRET, "cluster_id": $CLUSTER_ID, "ocp_id": $OCP_ID}'

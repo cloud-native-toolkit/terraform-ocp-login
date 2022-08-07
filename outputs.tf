@@ -1,6 +1,11 @@
 output "id" {
-  value       = data.external.oc_login.result.serverUrl
+  value       = data.external.cluster_info.result.cluster_id
   description = "ID of the cluster."
+}
+
+output "ocp_id" {
+  value       = data.external.cluster_info.result.ocp_id
+  description = "OpenShift ID of the cluster."
 }
 
 output "name" {
