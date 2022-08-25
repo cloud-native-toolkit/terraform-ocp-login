@@ -8,13 +8,12 @@ locals {
 
 module setup_clis {
   source = "cloud-native-toolkit/clis/util"
-  version = "1.16.4"
 
-  clis = ["jq", "oc", "ibmcloud-ks"]
+  clis = ["jq", "oc"]
 }
 
-data external ibmcloud_login {
-  program = ["bash", "${path.module}/scripts/ibmcloud-login.sh"]
+data external oc_login {
+  program = ["bash", "${path.module}/scripts/oc-login.sh"]
 
   query = {
     bin_dir = module.setup_clis.bin_dir
@@ -25,21 +24,6 @@ data external ibmcloud_login {
     password = var.login_password
     serverUrl = var.server_url
     kube_config = !var.skip ? local.cluster_config : local.default_cluster_config
-  }
-}
-
-data external oc_login {
-  program = ["bash", "${path.module}/scripts/oc-login.sh"]
-
-  query = {
-    bin_dir = module.setup_clis.bin_dir
-    skip = data.external.ibmcloud_login.result.skip
-    serverUrl = data.external.ibmcloud_login.result.serverUrl
-    username = data.external.ibmcloud_login.result.username
-    password = data.external.ibmcloud_login.result.password
-    token = data.external.ibmcloud_login.result.token
-    kube_config = data.external.ibmcloud_login.result.kube_config
-    tmp_dir = local.tmp_dir
     ca_cert = local.ca_cert
   }
 }
