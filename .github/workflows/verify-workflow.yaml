@@ -21,13 +21,11 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    container: quay.io/cloudnativetoolkit/cli-tools:v1.4.0-v1.1
+    container: quay.io/cloudnativetoolkit/cli-tools:v1.2
 
     strategy:
       matrix:
         testcase:
-          - ibm_ocp48
-          - ibm_ocp49
           - ibm_ocp410
           - azure_latest_gitops
       fail-fast: false
