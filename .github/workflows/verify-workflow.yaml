@@ -16,6 +16,12 @@ on:
         required: true
       AZURE_CLUSTER_CA_CERT:
         required: true
+      OPENSHIFT_SERVER:
+        required: true
+      OPENSHIFT_USER:
+        required: true
+      OPENSHIFT_PASSWORD:
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
