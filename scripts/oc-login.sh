@@ -76,7 +76,10 @@ else
   AUTH_TYPE="username(${USERNAME})"
   if ! oc login --kubeconfig="${KUBE_CONFIG}" --insecure-skip-tls-verify=true --username="${USERNAME}" --password="${PASSWORD}" ${CERTIFICATE} "${SERVER}" 1> /dev/null; then
     echo "Error logging in to ${SERVER} with kubeconfig=${KUBE_CONFIG}, auth=${AUTH_TYPE}, and cert_file=${CERT_FILE}" >&2
-    cat "${CERT_FILE}" | wc -c | xargs -I{} echo "cert size: {}" >&2
+    if [[ -n "${CERT_FILE}" ]]; then
+      cat "${CERT_FILE}" | wc -c | xargs -I{} echo "cert size: {}" >&2
+    fi
+
     oc login --kubeconfig="${KUBE_CONFIG}" --insecure-skip-tls-verify=true --username="${USERNAME}" --password="${PASSWORD}" ${CERTIFICATE} "${SERVER}" --loglevel=10 >&2
     exit 1
   else
