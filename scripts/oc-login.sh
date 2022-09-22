@@ -53,6 +53,7 @@ fi
 KUBE_DIR=$(dirname "${KUBE_CONFIG}")
 mkdir -p "${KUBE_DIR}"
 touch "${KUBE_CONFIG}"
+chmod 600 "${KUBE_CONFIG}"
 
 CERTIFICATE=""
 CERT_FILE=""
