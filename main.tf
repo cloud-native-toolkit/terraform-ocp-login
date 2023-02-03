@@ -7,7 +7,7 @@ locals {
 }
 
 data clis_check clis {
-  clis = ["jq", "oc", "ibmcloud-ks"]
+  clis = ["jq", "oc", "ibmcloud", "ibmcloud-ks"]
 }
 
 data external ibmcloud_login {
