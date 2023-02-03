@@ -6,18 +6,15 @@ locals {
   ca_cert               = var.ca_cert_file != null && var.ca_cert_file != "" ? base64encode(file(var.ca_cert_file)) : var.ca_cert
 }
 
-module setup_clis {
-  source = "cloud-native-toolkit/clis/util"
-  version = "1.16.4"
-
-  clis = ["jq", "oc", "ibmcloud-ks"]
+data clis_check clis {
+  clis = ["jq", "oc", "ibmcloud", "ibmcloud-ks"]
 }
 
 data external ibmcloud_login {
   program = ["bash", "${path.module}/scripts/ibmcloud-login.sh"]
 
   query = {
-    bin_dir = module.setup_clis.bin_dir
+    bin_dir = data.clis_check.clis.bin_dir
     skip = var.skip
     tmp_dir = local.tmp_dir
     token = var.login_token
@@ -32,7 +29,7 @@ data external oc_login {
   program = ["bash", "${path.module}/scripts/oc-login.sh"]
 
   query = {
-    bin_dir = module.setup_clis.bin_dir
+    bin_dir = data.clis_check.clis.bin_dir
     skip = data.external.ibmcloud_login.result.skip
     serverUrl = data.external.ibmcloud_login.result.serverUrl
     username = data.external.ibmcloud_login.result.username
@@ -50,7 +47,7 @@ data external cluster_info {
   program = ["bash", "${path.module}/scripts/get-cluster-info.sh"]
 
   query = {
-    bin_dir = module.setup_clis.bin_dir
+    bin_dir = data.clis_check.clis.bin_dir
     kube_config = data.external.oc_login.result.kube_config
     default_ingress = var.ingress_subdomain
   }
